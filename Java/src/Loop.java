@@ -36,20 +36,56 @@ public class Loop {
 //        }
 
         //hiển thị 20 số nguyên tố đầu tiên
-        int count = 0;
-        for (int n = 2; count < 20 ; n++) {
-            boolean isPrime = true;
+        //số nguyên tố là các số CHỈ chia được 1 và chính nó ( chỉ có 2 ước)
+        //kiểm tra 1 số xem có phải số nguyên tố hay không => hiển thị 20 số nguyên tố
 
-            for (int i = 2; i < 20 ; i++) {
-                if (n % i ==0){
-                    isPrime = false;
-                    break;
-                }
+//        int count = 0;
+//        for (int n = 2; count < 20 ; n++) {
+//            boolean isPrime = true;
+//
+//            for (int i = 2; i < 20 ; i++) {
+//                if (n % i ==0){
+//                    isPrime = false;
+//                    break;
+//                }
+//            }
+//            if (isPrime){
+//                System.out.println(n +"");
+//                count++;
+//            }
+//        }
+
+//        int number = 1;
+//        int countPrime = 0;
+//        System.out.println("20 so nguyen to dau tien: ");
+//        while (countPrime < 20) {
+//            int count = 0;
+//            for (int i = 1; i <= number; i++) {
+//                if (number % i == 0) {
+//                    count++;
+//                }
+//            }
+//            if (count == 2) {
+//                System.out.println(number);
+//                countPrime++;
+//            }
+//            number++;
+//        }
+
+        //hiển thị hình
+//        for (int i = 1; i <= 5; i++) { //dòng i = 1
+//            for (int j = 1; j <= i; j++) { // * trong dòng
+//                System.out.print("* ");
+//            }
+//            System.out.print("\n");
+//        }
+
+        for (int i = 1; i <= 5; i++) { //dòng i = 1
+            for (int j = 1; j <= 6 - i; j++) { // * trong dòng
+                System.out.print("* ");
             }
-            if (isPrime){
-                System.out.println(n +"");
-                count++;
-            }
+            System.out.print("\n");
         }
+
     }
 }
