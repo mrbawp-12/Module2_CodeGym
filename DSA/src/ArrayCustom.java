@@ -11,8 +11,8 @@ public class ArrayCustom<T> { //Tương tự như tham số truyền vào nhưng
 //
 //}
 
-//class Main {
-//    public static void main(String[] args) {
-////        ArrayList<Integer> arrayList = new ArrayList<>(); // khi truyền kiểu dữ liệu cho generic thì không được phép là kiểu dữ liệu nguyên thủy
-//    }
-//}
+class Main {
+    public static void main(String[] args) {
+//        ArrayList<Integer> arrayList = new ArrayList<>(); // khi truyền kiểu dữ liệu cho generic thì không được phép là kiểu dữ liệu nguyên thủy
+    }
+}

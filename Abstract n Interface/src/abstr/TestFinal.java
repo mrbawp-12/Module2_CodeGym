@@ -1,13 +1,13 @@
 package abstr;
 
-public class TestFinal { // Khi đặt final ở Class thì class này ko cho phép extends
+public class TestFinal { // Khi đặt final ở class thì class naỳ không cho phép extends
     final int a = 10; // đây là hằng số
 
     void test() {
         final int b = 10; // đi với biến thì final có tác dụng đánh dấu là hằng số
     }
 
-    void add() { // đi với method thì không phép ghi đè
+    void add() { // đi với method thì không cho phép ghi đè
 
     }
 }
