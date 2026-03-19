@@ -9,7 +9,7 @@ import java.util.List;
 public class File {
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    //dan file
+    //dan file - sửa đường dẫn
     public static final String userFile = "data/users.txt";
     public static final String roomFile = "data/rooms.txt";
     public static final String invoiceFile = "data/invoices.txt";
@@ -28,23 +28,30 @@ public class File {
             while ((line = br.readLine()) != null) {
                 lines.add(line);
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Loi doc file: " + e.getMessage());
         }
         return lines;
     }
 
+    //ghi file - sửa lỗi tạo thư mục
     public static void writeFile(String filePath, List<String> lines) {
         try {
             java.io.File file = new java.io.File(filePath);
-            file.getParentFile().mkdirs();
+            java.io.File parentDir = file.getParentFile();
+
+            // Kiểm tra và tạo thư mục nếu cần
+            if (parentDir != null && !parentDir.exists()) {
+                parentDir.mkdirs();
+            }
+
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
                 for (String line : lines) {
                     bw.write(line);
                     bw.newLine();
                 }
             }
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Loi ghi file: " + e.getMessage());
         }
     }
@@ -62,7 +69,7 @@ public class File {
         try {
             parseDate(dateStr);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }

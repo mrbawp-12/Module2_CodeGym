@@ -1,5 +1,6 @@
 package view;
 
+import exception.NotFoundException;
 import model.*;
 import service.*;
 
@@ -174,7 +175,13 @@ public class MenuView {
     private void addNewRoom() {
         try {
             Room room = new Room();
-            room.setId("R" + System.currentTimeMillis());
+            System.out.print("Nhap ma phong (VD: P101, P202,...): ");
+            String id = scanner.nextLine();
+            if (id.trim().isEmpty()) {
+                //tu tao ID neu khong nhap
+                id = "R" + System.currentTimeMillis();
+            }
+            room.setId(id);
 
             System.out.print("Nhap ten phong: ");
             String roomName = scanner.nextLine();
@@ -244,22 +251,73 @@ public class MenuView {
         try {
             System.out.println("\n === CAP NHAT THONG TIN PHONG ===");
             System.out.print("Nhap ID phong can cap nhat: ");
-            String id = scanner.nextLine();
-            Room room = roomService.findRoomById(Integer.parseInt(id));
+            String id = scanner.nextLine(); // Không parse thành Integer nữa
+
+            // Tìm phòng theo ID (String)
+            Room room = roomService.findRoomById(String.valueOf(Integer.parseInt(id))); // Sửa method này trong RoomService
+
             System.out.println("Thong tin phong hien tai: " + room);
-            System.out.print("Nhap thong tin moi (enter de giu nguyen): ");
-            System.out.print("Ten phong:  (" + room.getRoomName() + "): ");
+
+            System.out.print("Nhap ten phong moi (" + room.getRoomName() + "): ");
             String roomName = scanner.nextLine();
-            if (!roomName.isEmpty()) {
+            if (!roomName.trim().isEmpty()) {
                 room.setRoomName(roomName);
             }
-            System.out.println("Gia phong: (" + room.getPrice() + "): ");
+
+            System.out.print("Nhap gia phong moi (" + room.getPrice() + "): ");
             String priceInput = scanner.nextLine();
-            if (!priceInput.isEmpty()) {
-                room.setPrice(Double.parseDouble(priceInput));
-                roomService.updateRoom(room);
-                System.out.println("Cap nhat phong thanh cong.");
+            if (!priceInput.trim().isEmpty()) {
+                try {
+                    double price = Double.parseDouble(priceInput);
+                    room.setPrice(price);
+                } catch (NumberFormatException e) {
+                    System.out.println("Gia phong khong hop le, giu nguyen gia cu!");
+                }
             }
+
+            System.out.print("Nhap so giuong moi (" + room.getBedCount() + "): ");
+            String bedCountInput = scanner.nextLine();
+            if (!bedCountInput.trim().isEmpty()) {
+                try {
+                    int bedCount = Integer.parseInt(bedCountInput);
+                    room.setBedCount(bedCount);
+                } catch (NumberFormatException e) {
+                    System.out.println("So giuong khong hop le, giu nguyen so cu!");
+                }
+            }
+
+            System.out.println("Nhap trang thai moi:");
+            System.out.println("1. San sang");
+            System.out.println("2. Dang su dung");
+            System.out.println("3. Dang bao tri");
+            System.out.println("0. Giu nguyen (" + room.getStatus() + ")");
+            System.out.print("Chon: ");
+
+            String statusChoice = scanner.nextLine();
+            if (!statusChoice.trim().isEmpty()) {
+                try {
+                    int choice = Integer.parseInt(statusChoice);
+                    switch (choice) {
+                        case 1:
+                            room.setStatus(RoomStatus.AVAILABLE);
+                            break;
+                        case 2:
+                            room.setStatus(RoomStatus.OCCUPIED);
+                            break;
+                        case 3:
+                            room.setStatus(RoomStatus.MAINTENANCE);
+                            break;
+                        default:
+                            System.out.println("Giu nguyen trang thai cu!");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Lua chon khong hop le, giu nguyen trang thai cu!");
+                }
+            }
+
+            roomService.updateRoom(room);
+            System.out.println("Cap nhat phong thanh cong!");
+
         } catch (Exception e) {
             System.out.println("Loi: " + e.getMessage());
         }
@@ -269,11 +327,26 @@ public class MenuView {
         try {
             System.out.println("\n === XOA PHONG ===");
             System.out.print("Nhap ID phong can xoa: ");
-            String id = scanner.nextLine();
-            roomService.deleteRoom(id);
-            System.out.println("Xoa phong thanh cong.");
-        } catch (Exception e) {
+            String id = scanner.nextLine(); // Không parse thành Integer
+
+            // Hiển thị thông tin phòng trước khi xóa
+            Room room = roomService.findRoomById(id);
+            System.out.println("Thong tin phong can xoa:");
+            System.out.println(room);
+            System.out.print("Ban co chac chan muon xoa? (y/n): ");
+            String confirm = scanner.nextLine();
+
+            if (confirm.equalsIgnoreCase("y")) {
+                roomService.deleteRoom(id);
+                System.out.println("Xoa phong thanh cong.");
+            } else {
+                System.out.println("Huy xoa phong.");
+            }
+
+        } catch (NotFoundException e) {
             System.out.println("Loi: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Loi khong xac dinh: " + e.getMessage());
         }
     }
 

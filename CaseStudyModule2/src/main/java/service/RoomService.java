@@ -43,9 +43,13 @@ public class RoomService {
     }
 
     //tim theo id
-    public Room findRoomById(int id)  throws NotFoundException {
-        return readRoomsFromFile().stream().filter(r -> r.getId().equals(id)).findFirst().orElseThrow(() -> new NotFoundException("Khong tim thay phong"));
+    public Room findRoomById(String id) throws NotFoundException {
+        return readRoomsFromFile().stream()
+                .filter(r -> r.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Khong tim thay phong voi ID: " + id));
     }
+
 
     //them phong
     public void addRoom(Room room) {
@@ -68,12 +72,13 @@ public class RoomService {
     }
 
         //xoa phong
-    public void deleteRoom(String id) throws NotFoundException {
-        List<Room> rooms = readRoomsFromFile();
-        boolean removed = rooms.removeIf(r -> r.getId().equals(id));
-        if (!removed) {
-            throw new NotFoundException("Khong tim thay phong");
+        // Trong RoomService.java
+        public void deleteRoom(String id) throws NotFoundException {
+            List<Room> rooms = readRoomsFromFile();
+            boolean removed = rooms.removeIf(r -> r.getId().equals(id));
+            if (!removed) {
+                throw new NotFoundException("Khong tim thay phong voi ID: " + id);
+            }
+            writeRoomsToFile(rooms);
         }
-        writeRoomsToFile(rooms);
-    }
 }
